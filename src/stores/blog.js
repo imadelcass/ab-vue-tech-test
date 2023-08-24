@@ -30,7 +30,6 @@ export const useBlogStore = defineStore('blogs', {
             resolve()
           })
           .catch(() => resolve())
-          .finally(() => console.log(this.blogs))
       })
     },
 
@@ -150,7 +149,6 @@ export const useBlogStore = defineStore('blogs', {
     },
 
     addVideosStorage(videos) {
-      console.log(videos)
       return new Promise((resolve) => {
         Promise.all(
           videos.map((video) => uploadBytes(storageRef(storage, `videos/${video.name}`), video.raw))
