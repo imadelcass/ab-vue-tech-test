@@ -1,11 +1,18 @@
 <template>
   <div class="w-1/2 mx-auto min-h-screen">
-    <h1 class="text-2xl font-bold text-center my-10">Video Blog Application</h1>
+    <div class="flex items-center justify-between my-10">
+      <h1 class="text-2xl font-bold">Video Blog Application</h1>
+      <div class="flex flex-col">
+        <el-button type="primary" link @click="authStore.logout()"
+          >Logout({{ authStore.user?.displayName }})</el-button
+        >
+      </div>
+    </div>
     <div class="flex justify-center pb-16">
       <el-button type="primary" @click="addBlog()">Add New Video Blog!</el-button>
     </div>
     <div>
-      <el-table :data="blogStore.blogs" v-loading="loading">
+      <el-table :data="validBlogs" v-loading="loading">
         <el-table-column prop="title" label="Title" />
         <el-table-column prop="description" label="Description" />
         <el-table-column prop="created_at" label="Created At" />
@@ -32,12 +39,14 @@
 
 <script setup>
 import AddUpdateBlog from '@/components/AddUpdateBlog.vue'
-import { ref, provide, onMounted } from 'vue'
+import { ref, provide, onMounted, computed } from 'vue'
 import { useBlogStore } from '@/stores/blog'
+import { useAuthStore } from '@/stores/auth'
 
 const dialogVisible = ref(false)
 const loading = ref(false)
 const blogStore = useBlogStore()
+const authStore = useAuthStore()
 const blog = ref({})
 
 /** Providers **/
@@ -48,6 +57,9 @@ provide('blog_dialog', { dialogVisible, blog, setDialogVisible })
 onMounted(() => {
   blogStore.fetch()
 })
+
+/** Computed **/
+const validBlogs = computed(() => blogStore.blogs.filter((blog) => blog.isValid))
 
 /** Methods **/
 const addBlog = () => {
