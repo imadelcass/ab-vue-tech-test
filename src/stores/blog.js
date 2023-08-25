@@ -12,7 +12,10 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  addDoc
+  addDoc,
+  auth,
+  query,
+  where
 } from '@/firebase/init.js'
 
 export const useBlogStore = defineStore('blogs', {
@@ -24,7 +27,7 @@ export const useBlogStore = defineStore('blogs', {
   actions: {
     fetch() {
       return new Promise((resolve) => {
-        getDocs(collection(db, 'blogs'))
+        getDocs(query(collection(db, 'blogs'), where('user_uid', '==', auth.currentUser.uid)))
           .then((snapshot) => {
             this.blogs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
             resolve()
@@ -62,6 +65,7 @@ export const useBlogStore = defineStore('blogs', {
                 title: blog.title,
                 description: blog.description,
                 isValid: blog.isValid,
+                user_uid: auth.currentUser.uid,
                 created_at: blog.created_at
               })
             })
@@ -93,6 +97,7 @@ export const useBlogStore = defineStore('blogs', {
                 title: blog.title,
                 description: blog.description,
                 isValid: blog.isValid,
+                user_uid: auth.currentUser.uid,
                 created_at: blog.created_at
               })
                 .then(() => this.removeVideos(blog.id))
