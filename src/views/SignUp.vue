@@ -27,6 +27,7 @@
             >
           </div>
         </div>
+        <p class="pt-2 text-end">Or you already have an account? <router-link to="/login" class="text-blue-500">Login</router-link></p>
       </div>
     </div>
   </div>
@@ -47,6 +48,7 @@ const loading = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
+/** Methods **/
 const next = () => {
   stepOneRef.value.formRef.validate(async (valid) => {
     if (valid) {

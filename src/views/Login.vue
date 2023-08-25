@@ -1,6 +1,6 @@
 <template>
-  <div class="w-2/4 mx-auto h-screen pt-20">
-    <div class="h-full">
+  <div class="w-2/4 h-2/3 mx-auto pt-20">
+    <div class="h-full shadow-xl p-10 border">
       <h1 class="text-3xl text-center py-10 font-bold">Login</h1>
       <div v-loading="loading">
         <step-one ref="stepOneRef" />
